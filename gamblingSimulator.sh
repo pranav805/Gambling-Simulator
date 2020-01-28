@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 echo "Welcome to Gambling Simulator"
 
 #CONSTANTS
@@ -6,36 +6,20 @@ BET=1
 
 #VARIABLES
 stake=100
-winningAmount=0
-losingAmount=0
 
-for (( i=1; i<=20; i++ ))
+while [[ $stake -ne 50 && $stake -ne 150 ]]
 do
-	while [[ $stake -ne 50 && $stake -ne 150 ]]
-	do
-		if [ $((RANDOM%2)) -eq 1 ]
-		then
-			stake=$(($stake+$BET))
-		else
-			stake=$(($stake-$BET))
-		fi
-	done
-
-	if [ $stake -eq 50 ]
+	if [ $((RANDOM%2)) -eq 1 ]
 	then
-		winningAmount=$(($winningAmount+50))
-		stake=100
+		stake=$(($stake+$BET))
 	else
-		losingAmount=$(($losingAmount+50))
-		stake=100
+		stake=$(($stake-$BET))
 	fi
 done
-if  [ $winningAmount -gt  $losingAmount ]
+
+if [ $stake -eq 50 ]
 then
-	echo "After 20 days of playing, total amount WON is: $(($winningAmount - $losingAmount))"
-elif [ $winningAmount -lt  $losingAmount ]
-then
-	echo "After 20 days of playing, total amount LOST is:  $(($losingAmount - $winningAmount))"
+	echo "You have LOST 50% of your stake"
 else
-	echo "You have neither WON or LOST"
+	echo "You have WON 50% of your stake"
 fi
