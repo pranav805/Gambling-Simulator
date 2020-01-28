@@ -6,20 +6,35 @@ BET=1
 
 #VARIABLES
 stake=100
+winningAmount=0
+looseingAmount=0
 
-while [[ $stake -ne 50 && $stake -ne 150 ]]
+for((i=1;i<=20;i++))
 do
-	if [ $((RANDOM%2)) -eq 1 ]
+	while [[ $stake -ne 50 && $stake -ne 150 ]]
+	do
+		if [ $((RANDOM%2)) -eq 1 ]
+		then
+			stake=$(($stake+$BET))
+		else
+			stake=$(($stake-$BET))
+		fi
+	done
+	if [ $stake -eq 50 ]
 	then
-		stake=$(($stake+$BET))
+		loosingAmount=$(($loosingAmount + 50))
+		stake=100
 	else
-		stake=$(($stake-$BET))
+		winningAmount=$(($winningAmount+50))
+		stake=100
 	fi
 done
-
-if [ $stake -eq 50 ]
+if [ $winningAmount -gt $loosingAmount ]
 then
-	echo "You have LOST 50% of your stake"
+	echo  "After 20 days of playing, you WON ₹$(($winningAmount - $loosingAmount))"
+elif [ $winningAmount -lt $loosingAmount ]
+then
+	echo "After 20 days of playing, you LOST ₹$(($loosingAmount - $winningAmount))"
 else
-	echo "You have WON 50% of your stake"
+	echo "You neither lose nor win"
 fi
