@@ -28,13 +28,13 @@ do
 	if [ $stake -eq 50 ]
 	then
 		loosingAmount=$(($loosingAmount + 50))
-		stake=100
 		((loseDays++))
+		stake=100
 		presentAmount=$(($presentAmount - 50))
 	else
 		winningAmount=$(($winningAmount + 50))
-		stake=100
 		((winDays++))
+		stake=100
 		presentAmount=$(($presentAmount + 50))
 	fi
 	luckyOrUnluckyDay[$i]=$presentAmount
@@ -42,7 +42,7 @@ done
 
 if [ $winningAmount -gt $loosingAmount ]
 then
-	echo  "After 20 days of playing, you WON ₹$(($winningAmount - $loosingAmount))"
+	echo "After 20 days of playing, you WON ₹$(($winningAmount - $loosingAmount))"
 elif [ $winningAmount -lt $loosingAmount ]
 then
 	echo "After 20 days of playing, you LOST ₹$(($loosingAmount - $winningAmount))"
@@ -54,13 +54,15 @@ echo Number of days of WON: $winDays
 echo Number of days of LOST: $loseDays
 echo Total amount WON: $winningAmount
 echo Total amount LOST: $loosingAmount
+
 function luckyOrNot(){
 for i in ${!luckyOrUnluckyDay[@]}
 do
-	echo "Day:$i	Amount:${luckyOrUnluckyDay[$i]}"
+	echo "$i ${luckyOrUnluckyDay[$i]}"
 done | sort -k2 $1 | head -1
 }
-echo "Luckiest Day and Amount Won Maximum: "
+
+echo "Luckiest Day and Amount Won Maximum: " 
 luckyOrNot -rn
 echo "Unluckiest Day and Amount Lost Maximum: "
 luckyOrNot -n
