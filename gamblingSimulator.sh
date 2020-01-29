@@ -10,7 +10,9 @@ winningAmount=0
 looseingAmount=0
 winDays=0
 loseDays=0
+presentAmount=0
 
+declare -A luckyOrUnluckyDay
 for((i=1;i<=20;i++))
 do
 	while [[ $stake -ne 50 && $stake -ne 150 ]]
@@ -28,11 +30,14 @@ do
 		loosingAmount=$(($loosingAmount + 50))
 		stake=100
 		((loseDays++))
+		presentAmount=$(($presentAmount - 50))
 	else
-		winningAmount=$(($winningAmount+50))
+		winningAmount=$(($winningAmount + 50))
 		stake=100
 		((winDays++))
+		presentAmount=$(($presentAmount + 50))
 	fi
+	luckyOrUnluckyDay[$i]=$presentAmount
 done
 
 if [ $winningAmount -gt $loosingAmount ]
@@ -49,4 +54,13 @@ echo Number of days of WON: $winDays
 echo Number of days of LOST: $loseDays
 echo Total amount WON: $winningAmount
 echo Total amount LOST: $loosingAmount
-
+function luckyOrNot(){
+for i in ${!luckyOrUnluckyDay[@]}
+do
+	echo "Day:$i	Amount:${luckyOrUnluckyDay[$i]}"
+done | sort -k2 $1 | head -1
+}
+echo "Luckiest Day and Amount Won Maximum: "
+luckyOrNot -rn
+echo "Unluckiest Day and Amount Lost Maximum: "
+luckyOrNot -n
